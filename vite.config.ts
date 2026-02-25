@@ -18,6 +18,38 @@ export default defineConfig({
   build: {
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
+    // Code splitting para reduzir bundle inicial
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // React core — sempre carregado
+          "vendor-react": ["react", "react-dom"],
+          // Roteamento
+          "vendor-router": ["wouter"],
+          // UI components (radix, etc)
+          "vendor-ui": [
+            "@radix-ui/react-tooltip",
+            "@radix-ui/react-dialog",
+            "@radix-ui/react-dropdown-menu",
+            "@radix-ui/react-label",
+            "@radix-ui/react-select",
+            "@radix-ui/react-tabs",
+            "@radix-ui/react-accordion",
+            "@radix-ui/react-checkbox",
+            "@radix-ui/react-switch",
+            "@radix-ui/react-slot",
+          ],
+          // tRPC + query
+          "vendor-trpc": ["@trpc/client", "@trpc/react-query", "@tanstack/react-query"],
+          // Formulários
+          "vendor-forms": ["react-hook-form", "@hookform/resolvers", "zod"],
+          // Icons
+          "vendor-icons": ["lucide-react"],
+        },
+      },
+    },
+    // Avisa a partir de 300kb (era 500kb)
+    chunkSizeWarningLimit: 300,
   },
   server: {
     host: true,
