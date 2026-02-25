@@ -1,0 +1,38 @@
+{
+  "name": "Mauro Monção Advogados Associados",
+  "short_name": "Mauro Monção",
+  "description": "Advocacia com inovação e compromisso — Direito Tributário, Planejamento Sucessório, Advocacia Pública Municipal e Direito Imobiliário.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#19385C",
+  "theme_color": "#19385C",
+  "orientation": "portrait-primary",
+  "categories": ["business", "legal"],
+  "lang": "pt-BR",
+  "icons": [
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-192x192-maskable.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512x512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

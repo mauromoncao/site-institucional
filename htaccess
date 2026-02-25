@@ -1,0 +1,10 @@
+RewriteEngine On
+
+# Proxy API calls to PHP proxy script
+RewriteCond %{REQUEST_URI} ^/api/trpc
+RewriteRule ^api/trpc/(.*)$ /api/trpc/index.php [L,QSA]
+
+# SPA routing - serve index.html for all non-file routes
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ /index.html [L]

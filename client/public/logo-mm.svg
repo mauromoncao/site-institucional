@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" fill="none">
+  <!-- Shield shape - outer gold border -->
+  <path d="M150 15 L260 55 L260 155 Q260 235 150 275 Q40 235 40 155 L40 55 Z" fill="#DEC078"/>
+  <!-- Shield inner blue fill -->
+  <path d="M150 28 L248 63 L248 155 Q248 226 150 262 Q52 226 52 155 L52 63 Z" fill="#19385C"/>
+  <!-- M letter - white/cream serif -->
+  <text x="150" y="200" 
+    text-anchor="middle" 
+    font-family="'Palatino Linotype', 'Book Antiqua', Palatino, Georgia, serif" 
+    font-size="160" 
+    font-weight="700" 
+    fill="#F5F0E8" 
+    letter-spacing="-4">M</text>
+</svg>

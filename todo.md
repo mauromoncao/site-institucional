@@ -1,0 +1,42 @@
+# Project TODO
+
+- [x] Schema do banco de dados para CMS (páginas, landing pages, blog, FAQ, leads, configurações, SEO)
+- [x] Autenticação local (email/senha) + Google OAuth sem dependência Manus
+- [x] Routers tRPC para CRUD de conteúdo (páginas, landing pages, blog, FAQ, leads)
+- [x] Routers tRPC para configurações do site (contato, redes sociais, endereços)
+- [x] Routers tRPC para SEO (meta tags por página)
+- [x] Upload de imagens via S3 próprio
+- [x] Dashboard admin /admin com sidebar e navegação intuitiva
+- [x] Tela de login admin (email/senha + Google)
+- [x] Dashboard home com estatísticas (leads, páginas, posts)
+- [x] Editor de páginas institucionais (sobre, contato, etc.)
+- [x] Editor de landing pages de soluções jurídicas
+- [x] Editor de blog (criar, editar, publicar artigos)
+- [x] Editor de FAQ
+- [x] Gerenciador de leads/contatos
+- [x] Editor de configurações do site (telefones, emails, endereços, redes sociais)
+- [x] Editor de SEO por página
+- [x] Site público com visual atual mantido
+- [x] Página inicial com hero, áreas de atuação, depoimentos
+- [x] Landing pages de soluções jurídicas dinâmicas
+- [x] Blog integrado ao site
+- [x] FAQ público
+- [x] Formulário de contato vinculado a contato@mauromoncao.adv.br (salva leads no banco)
+- [x] WhatsApp flutuante com (86) 99482-0054
+- [x] GTM-MMKSHTQV integrado
+- [x] Migrar 16 imagens do CDN Manus para S3 próprio (servidas localmente em /images/)
+- [x] Remover todas as referências a api.manus.im, cname.manus.space, files.manuscdn.com
+- [x] Remover spaceEditor e runtime Manus
+- [x] Seed do banco com conteúdo atual do site
+- [x] Testes vitest para autenticação e routers principais
+- [x] Push para GitHub e deploy na Vercel (código enviado para mauromoncao/site-institucional)
+- [x] Soluções jurídicas: permitir vincular landing page interna OU externa via link manual
+- [x] Corrigir e-mail do admin de mauromoncaofilho@gmail.com para mauromoncaoadv.escritorio@gmail.com
+- [x] Auditar todas as dependências Manus no código
+- [x] Migrar imagens do CDN Manus para S3 próprio
+- [x] Substituir autenticação Manus OAuth por autenticação local independente
+- [x] Remover dependências de APIs Manus (LLM, storage, notification, forge)
+- [x] Integrar Google Tag Manager (GTM-MMKSHTQV)
+- [x] Adaptar configuração para deploy na Vercel (vercel.json criado)
+- [x] Exportar código para repositório GitHub (pronto via Settings > GitHub)
+- [x] Documentar variáveis de ambiente necessárias para deploy (ENV-GUIDE.md)

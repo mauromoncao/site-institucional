@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Bloquear admin
+Disallow: /admin
+Disallow: /admin/
+
+# Sitemap
+Sitemap: https://mauromoncao.adv.br/sitemap.xml

@@ -1,0 +1,16 @@
+{
+  "query": "SELECT id, email, name, role FROM admin_users;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4175mRjUqSPAoGh.4a1170e7fc65 --database 3wp7Jjz5aA9mVcJQsZEDRT --execute SELECT id, email, name, role FROM admin_users;",
+  "rows": [
+    {
+      "id": "1",
+      "email": "mauromoncaoadv.escritorio@gmail.com",
+      "name": "Dr. Mauro Monção",
+      "role": "admin"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\temail\tname\trole\n1\tmauromoncaoadv.escritorio@gmail.com\tDr. Mauro Monção\tadmin\n",
+  "stderr": "",
+  "execution_time_ms": 60
+}

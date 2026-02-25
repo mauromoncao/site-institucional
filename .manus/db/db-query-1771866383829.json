@@ -1,0 +1,17 @@
+{
+  "query": "SELECT id, email, name, role, googleId FROM admin_users LIMIT 5;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4175mRjUqSPAoGh.4a1170e7fc65 --database 3wp7Jjz5aA9mVcJQsZEDRT --execute SELECT id, email, name, role, googleId FROM admin_users LIMIT 5;",
+  "rows": [
+    {
+      "id": "1",
+      "email": "mauromoncaoadv.escritorio@gmail.com",
+      "name": "Dr. Mauro Monção",
+      "role": "admin",
+      "googleId": "NULL"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\temail\tname\trole\tgoogleId\n1\tmauromoncaoadv.escritorio@gmail.com\tDr. Mauro Monção\tadmin\tNULL\n",
+  "stderr": "",
+  "execution_time_ms": 264
+}

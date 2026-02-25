@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1771864517010,
+      "tag": "0000_cool_whistler",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1771864829038,
+      "tag": "0001_flat_falcon",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1771864918779,
+      "tag": "0002_fearless_hydra",
+      "breakpoints": true
+    }
+  ]
+}
