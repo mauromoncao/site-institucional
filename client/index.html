@@ -12,19 +12,14 @@
     <meta name="apple-mobile-web-app-title" content="Mauro Monção" />
 
     <!-- Favicons -->
-    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="48x48" href="/icons/favicon-48x48.png" />
-    <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192x192.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.json" />
 
-    <!-- Google Fonts — carregamento assíncrono para não bloquear render -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <!-- Google Fonts — NÃO bloqueia render (sem preload, só stylesheet async) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Outfit:wght@300;400;500;600;700&display=swap" />
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
-    <noscript><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" /></noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'" />
 
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -34,19 +29,18 @@
     })(window,document,'script','dataLayer','GTM-MMKSHTQV');</script>
     <!-- End Google Tag Manager -->
 
-    <!-- JSON-LD: Organization + WebSite (estático, indexado sem JS) -->
+    <!-- JSON-LD Estruturado -->
     <script type="application/ld+json">
     [
       {
         "@context": "https://schema.org",
         "@type": "LegalService",
         "name": "Mauro Monção Advogados Associados",
-        "alternateName": "Mauro Monção Adv.",
         "url": "https://mauromoncao.adv.br",
         "logo": "https://mauromoncao.adv.br/logo-brand.png",
-        "description": "Advocacia estratégica em Direito Tributário, Planejamento Patrimonial, Previdenciário e Empresarial. Escritório Mauro Monção Advogados — Piauí e Maranhão.",
+        "description": "Advocacia estratégica em Direito Tributário, Planejamento Patrimonial, Previdenciário e Empresarial.",
         "foundingDate": "2015",
-        "areaServed": ["Piauí", "Maranhão", "Brasil"],
+        "areaServed": ["Piauí", "Maranhão", "Ceará", "Brasil"],
         "address": [
           {
             "@type": "PostalAddress",
@@ -55,14 +49,6 @@
             "addressRegion": "PI",
             "postalCode": "64215-700",
             "addressCountry": "BR"
-          },
-          {
-            "@type": "PostalAddress",
-            "streetAddress": "Av. dos Holandeses, nº 4, Ed. Balsas, Sala 1004",
-            "addressLocality": "São Luís",
-            "addressRegion": "MA",
-            "postalCode": "65071-380",
-            "addressCountry": "BR"
           }
         ],
         "contactPoint": {
@@ -70,11 +56,7 @@
           "telephone": "+55-86-99482-0054",
           "contactType": "customer service",
           "availableLanguage": "Portuguese"
-        },
-        "sameAs": [
-          "https://www.instagram.com/mauromoncaoadv",
-          "https://www.linkedin.com/company/mauro-moncao-advogados"
-        ]
+        }
       },
       {
         "@context": "https://schema.org",
@@ -95,7 +77,6 @@
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MMKSHTQV"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
 
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>

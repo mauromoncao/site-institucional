@@ -6,22 +6,23 @@ import { CookieBanner } from "./components/site/CookieBanner";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { AdminAuthProvider } from "./contexts/AdminAuthContext";
-// SiteLayout é usado por TODAS as páginas públicas — importação eager para evitar waterfall
+
+// Páginas principais — importação DIRETA (sem lazy) para renderizar instantaneamente
+import Home from "./pages/Home";
 import SiteLayout from "@/components/site/SiteLayout";
 
-// Loading spinner — fundo branco para não parecer erro no mobile
+// Spinner só para páginas secundárias e admin
 function PageLoader() {
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100vh", background: "#ffffff" }}>
-      <div style={{ width: 48, height: 48, border: "4px solid #E8B84B", borderTopColor: "transparent", borderRadius: "50%", animation: "spin 0.8s linear infinite", marginBottom: 16 }} />
-      <p style={{ color: "#19385C", fontFamily: "system-ui,sans-serif", fontSize: 14, margin: 0 }}>Carregando...</p>
+      <div style={{ width: 44, height: 44, border: "4px solid #E8B84B", borderTopColor: "transparent", borderRadius: "50%", animation: "spin 0.7s linear infinite", marginBottom: 12 }} />
+      <p style={{ color: "#19385C", fontFamily: "system-ui,sans-serif", fontSize: 13, margin: 0, fontWeight: 500 }}>Carregando...</p>
       <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </div>
   );
 }
 
-// Public pages — lazy loaded
-const Home = lazy(() => import("./pages/Home"));
+// Páginas secundárias — lazy (carregam só quando acessadas)
 const Sobre = lazy(() => import("./pages/Sobre"));
 const Contato = lazy(() => import("./pages/Contato"));
 const Blog = lazy(() => import("./pages/Blog"));
@@ -35,7 +36,7 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 const PoliticaDePrivacidade = lazy(() => import("./pages/PoliticaDePrivacidade"));
 const TermosDeUso = lazy(() => import("./pages/TermosDeUso"));
 
-// Soluções pages — lazy loaded
+// Soluções — lazy
 const IrpfAutismo = lazy(() => import("./pages/solucoes/IrpfAutismo"));
 const DireitoBancario = lazy(() => import("./pages/solucoes/DireitoBancario"));
 const DireitoPrevidenciario = lazy(() => import("./pages/solucoes/DireitoPrevidenciario"));
@@ -48,7 +49,7 @@ const ClinicasLucroPresumido = lazy(() => import("./pages/solucoes/ClinicasLucro
 const DefesaFiscal = lazy(() => import("./pages/solucoes/DefesaFiscal"));
 const DrBen = lazy(() => import("./pages/solucoes/DrBen"));
 
-// Admin pages — lazy loaded (separate chunk)
+// Admin — lazy (chunk separado, só carrega se acessar /admin)
 const AdminLayout = lazy(() => import("./pages/admin/AdminLayout"));
 const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
 const AdminPages = lazy(() => import("./pages/admin/AdminPages"));
@@ -89,14 +90,16 @@ function AdminRouter() {
 
 function Router() {
   return (
-    <Suspense fallback={<PageLoader />}>
-      <Switch>
-        {/* Admin routes */}
-        <Route path="/admin/:rest*" component={AdminRouter} />
-        <Route path="/admin" component={AdminRouter} />
+    <Switch>
+      {/* Admin routes — lazy com spinner */}
+      <Route path="/admin/:rest*" component={AdminRouter} />
+      <Route path="/admin" component={AdminRouter} />
 
-        {/* Public routes */}
-        <Route path="/" component={Home} />
+      {/* Rota raiz — Home carrega IMEDIATAMENTE, sem Suspense */}
+      <Route path="/" component={Home} />
+
+      {/* Páginas secundárias — lazy com Suspense */}
+      <Suspense fallback={<PageLoader />}>
         <Route path="/sobre" component={Sobre} />
         <Route path="/contato" component={Contato} />
         <Route path="/blog" component={Blog} />
@@ -117,16 +120,13 @@ function Router() {
         <Route path="/assistente-juridico" component={DrBen} />
         <Route path="/dr-ben" component={DrBen} />
         <Route path="/solucoes-juridicas/:slug" component={LandingPage} />
-
-        {/* Dynamic pages managed by admin */}
         <Route path="/pagina/:slug" component={PageView} />
-
         <Route path="/politica-de-privacidade" component={PoliticaDePrivacidade} />
         <Route path="/termos-de-uso" component={TermosDeUso} />
         <Route path="/404" component={NotFound} />
         <Route component={NotFound} />
-      </Switch>
-    </Suspense>
+      </Suspense>
+    </Switch>
   );
 }
 
