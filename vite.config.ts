@@ -26,21 +26,25 @@ export default defineConfig({
           "vendor-react": ["react", "react-dom"],
           // Roteamento
           "vendor-router": ["wouter"],
-          // UI components (radix, etc)
-          "vendor-ui": [
+          // UI components (radix, etc) — dividido em dois para carregar em paralelo
+          "vendor-ui-core": [
             "@radix-ui/react-tooltip",
             "@radix-ui/react-dialog",
             "@radix-ui/react-dropdown-menu",
+            "@radix-ui/react-slot",
+          ],
+          "vendor-ui-extra": [
             "@radix-ui/react-label",
             "@radix-ui/react-select",
             "@radix-ui/react-tabs",
             "@radix-ui/react-accordion",
             "@radix-ui/react-checkbox",
             "@radix-ui/react-switch",
-            "@radix-ui/react-slot",
           ],
           // tRPC + query
           "vendor-trpc": ["@trpc/client", "@trpc/react-query", "@tanstack/react-query"],
+          // superjson separado
+          "vendor-superjson": ["superjson"],
           // Formulários
           "vendor-forms": ["react-hook-form", "@hookform/resolvers", "zod"],
           // Icons

@@ -1,7 +1,10 @@
+import { lazy, Suspense } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import WhatsAppFloat from "./WhatsAppFloat";
-import DrBenWidget from "@/components/DrBenWidget";
+
+// DrBenWidget carregado de forma lazy — não bloqueia o render inicial
+const DrBenWidget = lazy(() => import("@/components/DrBenWidget"));
 
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -10,7 +13,9 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
       <main className="flex-1">{children}</main>
       <Footer />
       <WhatsAppFloat />
-      <DrBenWidget />
+      <Suspense fallback={null}>
+        <DrBenWidget />
+      </Suspense>
     </div>
   );
 }
