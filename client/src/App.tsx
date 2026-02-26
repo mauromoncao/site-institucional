@@ -2,6 +2,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Route, Switch } from "wouter";
 import { lazy, Suspense } from "react";
+import { CookieBanner } from "./components/site/CookieBanner";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { AdminAuthProvider } from "./contexts/AdminAuthContext";
@@ -28,6 +29,8 @@ const AreasDeAtuacao = lazy(() => import("./pages/AreasDeAtuacao"));
 const LandingPage = lazy(() => import("./pages/LandingPage"));
 const PageView = lazy(() => import("./pages/PageView"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+const PoliticaDePrivacidade = lazy(() => import("./pages/PoliticaDePrivacidade"));
+const TermosDeUso = lazy(() => import("./pages/TermosDeUso"));
 
 // Soluções pages — lazy loaded
 const IrpfAutismo = lazy(() => import("./pages/solucoes/IrpfAutismo"));
@@ -115,6 +118,8 @@ function Router() {
         {/* Dynamic pages managed by admin */}
         <Route path="/pagina/:slug" component={PageView} />
 
+        <Route path="/politica-de-privacidade" component={PoliticaDePrivacidade} />
+        <Route path="/termos-de-uso" component={TermosDeUso} />
         <Route path="/404" component={NotFound} />
         <Route component={NotFound} />
       </Switch>
@@ -129,6 +134,7 @@ function App() {
         <TooltipProvider>
           <Toaster />
           <Router />
+          <CookieBanner />
         </TooltipProvider>
       </ThemeProvider>
     </ErrorBoundary>

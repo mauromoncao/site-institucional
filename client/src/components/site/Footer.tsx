@@ -106,9 +106,20 @@ export default function Footer() {
 
       {/* Bottom bar */}
       <div className="border-t border-white/5">
-        <div className="container py-4 flex flex-col sm:flex-row justify-between items-center text-xs text-white/60">
-          <p>&copy; {new Date().getFullYear()} Mauro Monção Advogados Associados. Todos os direitos reservados.</p>
-          <p className="mt-2 sm:mt-0">OAB/PI 22.291</p>
+        <div className="container py-4 flex flex-col sm:flex-row justify-between items-center text-xs text-white/60 gap-2">
+          <p>&copy; {new Date().getFullYear()} Mauro Monção Advogados Associados. Todos os direitos reservados. OAB/PI 22.291</p>
+          <div className="flex items-center gap-4 mt-2 sm:mt-0">
+            <a href="/politica-de-privacidade" className="hover:text-[#c8a45a] transition-colors">Política de Privacidade</a>
+            <span className="opacity-30">|</span>
+            <a href="/termos-de-uso" className="hover:text-[#c8a45a] transition-colors">Termos de Uso</a>
+            <span className="opacity-30">|</span>
+            <button
+              onClick={() => { localStorage.removeItem("mm_lgpd_consent"); window.location.reload(); }}
+              className="hover:text-[#c8a45a] transition-colors cursor-pointer"
+            >
+              Cookies
+            </button>
+          </div>
         </div>
       </div>
     </footer>
