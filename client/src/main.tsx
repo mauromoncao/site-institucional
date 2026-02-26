@@ -11,9 +11,11 @@ import "./index.css";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 30_000,      // 30s cache
+      staleTime: 5 * 60_000,  // 5 min cache — evita refetch desnecessário
+      gcTime: 10 * 60_000,    // 10 min em memória
       retry: 1,
       refetchOnWindowFocus: false,
+      refetchOnMount: false,  // usa cache se disponível
     },
   },
 });

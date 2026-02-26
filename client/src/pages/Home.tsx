@@ -12,7 +12,11 @@ const iconMap: Record<string, any> = {
 // iconMap mantido para uso futuro em outras seções
 
 export default function Home() {
-  const { data: blogPosts } = trpc.blog.listPublic.useQuery();
+  const { data: blogPosts } = trpc.blog.listPublic.useQuery(undefined, {
+    staleTime: 5 * 60_000,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+  });
   const { settings } = useSettings();
   const phone = settings.phone_whatsapp || "(86) 99482-0054";
   const latestPosts = blogPosts?.slice(0, 5) || [];
