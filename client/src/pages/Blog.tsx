@@ -170,25 +170,27 @@ function PostCard({ post }: { post: any }) {
 }
 
 /* ──────────────────────────────────────────────
-   FEATURED POST component
+   HIGHLIGHT CARD — usado nos 3 destaques
+   Variantes: "large" (card principal) e "small"
 ────────────────────────────────────────────── */
-function FeaturedPost({ post }: { post: any }) {
+function HighlightCard({ post, variant = "small", badge }: { post: any; variant?: "large" | "small"; badge?: string }) {
   const category = post.categorySlug || null;
   const categoryLabel = getCategoryLabel(category);
   const date = post.publishedAt || post.createdAt;
+  const minH = variant === "large" ? "420px" : "260px";
 
   return (
     <Link
       href={`/blog/${post.slug}`}
-      className="group relative rounded-3xl overflow-hidden flex flex-col justify-end"
-      style={{ minHeight: "520px" }}
+      className="group relative rounded-2xl overflow-hidden flex flex-col justify-end"
+      style={{ minHeight: minH }}
     >
       {/* Background */}
       {post.coverImage ? (
         <img
           src={post.coverImage}
           alt={post.title}
-          className="absolute inset-0 w-full h-full object-cover group-hover:scale-103 transition-transform duration-700"
+          className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
         />
       ) : (
         <div
@@ -202,23 +204,25 @@ function FeaturedPost({ post }: { post: any }) {
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(to top, rgba(7,24,46,0.97) 0%, rgba(7,24,46,0.75) 50%, rgba(7,24,46,0.2) 100%)",
+            "linear-gradient(to top, rgba(7,24,46,0.96) 0%, rgba(7,24,46,0.65) 55%, rgba(7,24,46,0.1) 100%)",
         }}
       />
 
       {/* Content */}
-      <div className="relative z-10 p-8 lg:p-10">
-        <div className="flex items-center gap-3 mb-5">
-          {/* Badge destaque */}
-          <span
-            className="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-[0.15em]"
-            style={{ background: GOLD, color: NAVY }}
-          >
-            Artigo em Destaque
-          </span>
+      <div className="relative z-10 p-6">
+        {/* Badges */}
+        <div className="flex flex-wrap items-center gap-2 mb-3">
+          {badge && (
+            <span
+              className="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-[0.15em]"
+              style={{ background: GOLD, color: NAVY }}
+            >
+              {badge}
+            </span>
+          )}
           {categoryLabel && (
             <span
-              className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border"
+              className="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border"
               style={{ borderColor: `${GOLD}50`, color: GOLD }}
             >
               {categoryLabel}
@@ -227,41 +231,36 @@ function FeaturedPost({ post }: { post: any }) {
         </div>
 
         <h2
-          className="font-serif font-bold text-white leading-tight mb-4 group-hover:text-[#E8B84B] transition-colors"
-          style={{ fontSize: "clamp(1.5rem, 3vw, 2rem)" }}
+          className="font-serif font-bold text-white leading-snug mb-3 group-hover:text-[#E8B84B] transition-colors"
+          style={{ fontSize: variant === "large" ? "clamp(1.25rem, 2.5vw, 1.6rem)" : "1rem" }}
         >
           {post.title}
         </h2>
 
-        {post.excerpt && (
-          <p className="text-white/70 text-sm leading-relaxed mb-6 max-w-2xl line-clamp-2">
+        {variant === "large" && post.excerpt && (
+          <p className="text-white/65 text-sm leading-relaxed mb-4 line-clamp-2">
             {post.excerpt}
           </p>
         )}
 
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4 text-white/60 text-xs">
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3 text-white/50 text-xs">
             {date && (
-              <span className="flex items-center gap-1.5">
-                <Calendar className="w-3.5 h-3.5" />
-                {new Date(date).toLocaleDateString("pt-BR", {
-                  day: "2-digit",
-                  month: "long",
-                  year: "numeric",
-                })}
+              <span className="flex items-center gap-1">
+                <Calendar className="w-3 h-3" />
+                {new Date(date).toLocaleDateString("pt-BR", { day: "2-digit", month: "short", year: "numeric" })}
               </span>
             )}
-            <span className="flex items-center gap-1.5">
-              <Clock className="w-3.5 h-3.5" />
-              8 min de leitura
+            <span className="flex items-center gap-1">
+              <Clock className="w-3 h-3" />
+              8 min
             </span>
           </div>
-
           <span
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-sm group-hover:brightness-110 transition-all"
+            className="shrink-0 inline-flex items-center gap-1 text-xs font-bold px-3 py-1.5 rounded-full group-hover:brightness-110 transition-all"
             style={{ background: GOLD, color: NAVY }}
           >
-            Ler artigo <ArrowRight className="w-4 h-4" />
+            Ler <ArrowRight className="w-3 h-3" />
           </span>
         </div>
       </div>
@@ -280,7 +279,10 @@ export default function Blog() {
 
   const allPosts: any[] = posts || [];
 
-  const featured = allPosts.find((p) => p.featured) || allPosts[0] || null;
+  // 3 posts mais recentes → destaques
+  const highlights = allPosts.slice(0, 3);
+  // restante dos posts → grade
+  const remainingPosts = allPosts.slice(3);
 
   const filtered = useMemo(() => {
     let result = allPosts;
@@ -297,9 +299,6 @@ export default function Blog() {
     }
     return result;
   }, [allPosts, activeCategory, search]);
-
-  const recentPosts = filtered.slice(0, 6);
-  const gridPosts = filtered.slice(featured ? 1 : 0);
 
   return (
     <SiteLayout>
@@ -478,33 +477,71 @@ export default function Blog() {
       </section>
 
       {/* ══════════════════════════════════════
-          FEATURED ARTICLE
+          ÚLTIMAS PUBLICAÇÕES — 3 destaques
       ══════════════════════════════════════ */}
-      {featured && !activeCategory && !search && (
+      {highlights.length > 0 && !activeCategory && !search && (
         <section className="py-12 bg-gray-50">
           <div className="container">
-            <div className="flex items-center justify-between mb-6">
-              <h2
-                className="font-serif font-bold text-2xl"
-                style={{ color: NAVY }}
-              >
-                Artigo em Destaque
-              </h2>
+            {/* Título da seção */}
+            <div className="flex items-center justify-between mb-7">
+              <div>
+                <div
+                  className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.18em] mb-1"
+                  style={{ color: GOLD }}
+                >
+                  <span
+                    className="w-4 h-0.5 rounded-full inline-block"
+                    style={{ background: GOLD }}
+                  />
+                  Últimas Publicações
+                </div>
+                <h2
+                  className="font-serif font-bold text-2xl"
+                  style={{ color: NAVY }}
+                >
+                  Em Destaque
+                </h2>
+              </div>
               <Link
                 href="/blog"
-                className="text-sm font-semibold flex items-center gap-1"
+                className="hidden sm:flex text-sm font-semibold items-center gap-1 hover:gap-2 transition-all"
                 style={{ color: GOLD }}
+                onClick={() => { setSearch(""); setActiveCategory(null); }}
               >
                 Ver todos <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
-            <FeaturedPost post={featured} />
+
+            {/* Layout: 1 grande + 2 menores */}
+            {highlights.length === 1 && (
+              <HighlightCard post={highlights[0]} variant="large" badge="Destaque" />
+            )}
+
+            {highlights.length === 2 && (
+              <div className="grid md:grid-cols-2 gap-5">
+                <HighlightCard post={highlights[0]} variant="large" badge="Destaque" />
+                <HighlightCard post={highlights[1]} variant="large" />
+              </div>
+            )}
+
+            {highlights.length >= 3 && (
+              <div className="grid lg:grid-cols-[1.6fr_1fr] gap-5">
+                {/* Card principal — maior */}
+                <HighlightCard post={highlights[0]} variant="large" badge="Mais Recente" />
+
+                {/* Coluna direita — 2 cards empilhados */}
+                <div className="grid grid-rows-2 gap-5">
+                  <HighlightCard post={highlights[1]} variant="small" />
+                  <HighlightCard post={highlights[2]} variant="small" />
+                </div>
+              </div>
+            )}
           </div>
         </section>
       )}
 
       {/* ══════════════════════════════════════
-          POSTS GRID
+          POSTS GRID — todos os artigos
       ══════════════════════════════════════ */}
       <section className="py-12 bg-gray-50">
         <div className="container">
@@ -519,17 +556,17 @@ export default function Blog() {
                   ? `${CATEGORIES.find((c) => c.slug === activeCategory)?.label || "Artigos"}`
                   : search
                   ? `Resultados para "${search}"`
-                  : "Posts Recentes"}
+                  : "Todos os Artigos"}
               </h2>
               <p className="text-gray-400 text-sm">
-                {filtered.length} artigo{filtered.length !== 1 ? "s" : ""} encontrado
-                {filtered.length !== 1 ? "s" : ""}
+                {(activeCategory || search ? filtered : remainingPosts).length} artigo
+                {(activeCategory || search ? filtered : remainingPosts).length !== 1 ? "s" : ""}
               </p>
             </div>
           </div>
 
           {/* Grid */}
-          {filtered.length === 0 ? (
+          {(activeCategory || search ? filtered : remainingPosts).length === 0 ? (
             <div className="text-center py-20">
               <BookOpen className="w-12 h-12 mx-auto mb-4 text-gray-300" />
               <p className="text-gray-500 text-lg mb-2">
@@ -545,10 +582,7 @@ export default function Blog() {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-              {(featured && !activeCategory && !search
-                ? allPosts.slice(1)
-                : filtered
-              ).map((post) => (
+              {(activeCategory || search ? filtered : remainingPosts).map((post) => (
                 <PostCard key={post.id} post={post} />
               ))}
             </div>
