@@ -212,21 +212,39 @@ const blogRouter = router({
       id: z.number().optional(),
       slug: z.string(),
       title: z.string(),
+      subtitle: z.string().optional().nullable(),
       excerpt: z.string().optional().nullable(),
       content: z.string().optional().nullable(),
       coverImage: z.string().optional().nullable(),
+      coverImageAlt: z.string().optional().nullable(),
+      videoUrl: z.string().optional().nullable(),
       authorName: z.string().optional().nullable(),
       categoryId: z.number().optional().nullable(),
+      category: z.string().optional().nullable(),
       tags: z.string().optional().nullable(),
       metaTitle: z.string().optional().nullable(),
       metaDescription: z.string().optional().nullable(),
+      metaKeywords: z.string().optional().nullable(),
       ogTitle: z.string().optional().nullable(),
       ogDescription: z.string().optional().nullable(),
       ogImage: z.string().optional().nullable(),
+      ctaText: z.string().optional().nullable(),
+      ctaUrl: z.string().optional().nullable(),
+      status: z.enum(["draft", "published", "scheduled", "archived"]).optional(),
+      isFeatured: z.boolean().optional(),
       isPublished: z.boolean().optional(),
-      publishedAt: z.date().optional().nullable(),
+      publishedAt: z.string().optional().nullable(),
+      scheduledAt: z.string().optional().nullable(),
     }))
-    .mutation(({ input }) => db.upsertBlogPost(input)),
+    .mutation(({ input }) => {
+      const data: any = { ...input };
+      if (typeof input.publishedAt === "string") data.publishedAt = new Date(input.publishedAt);
+      if (typeof input.scheduledAt === "string") data.scheduledAt = new Date(input.scheduledAt);
+      if (input.status === "published") { data.isPublished = true; if (!data.publishedAt) data.publishedAt = new Date(); }
+      if (input.status === "draft" || input.status === "archived") data.isPublished = false;
+      if (input.status === "scheduled") data.isPublished = false;
+      return db.upsertBlogPost(data);
+    }),
   delete: adminMiddleware.input(z.object({ id: z.number() })).mutation(({ input }) => db.deleteBlogPost(input.id)),
   categories: router({
     list: publicProcedure.query(() => db.getAllBlogCategories()),

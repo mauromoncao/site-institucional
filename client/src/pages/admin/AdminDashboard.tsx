@@ -1,15 +1,25 @@
 import { trpc } from "@/lib/trpc";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
   FileText, Users, Megaphone, BookOpen, HelpCircle, Scale,
   Loader2, ArrowRight, PlusCircle, Eye, Image, Settings,
   TrendingUp, Clock, CheckCircle, AlertCircle, Video,
+  Send, Archive, Edit3, Tag, BarChart3, Zap, Star,
 } from "lucide-react";
 import { useLocation } from "wouter";
 
 const GOLD = "#E8B84B";
 const NAVY = "#19385C";
+
+function StatusPill({ label, count, color, bg }: { label: string; count: number; color: string; bg: string }) {
+  return (
+    <div className="flex items-center justify-between px-3 py-2 rounded-lg" style={{ background: bg }}>
+      <span className="text-xs font-semibold" style={{ color }}>{label}</span>
+      <span className="text-sm font-bold" style={{ color }}>{count}</span>
+    </div>
+  );
+}
 
 export default function AdminDashboard() {
   const { data: stats, isLoading } = trpc.dashboard.stats.useQuery();
@@ -19,20 +29,82 @@ export default function AdminDashboard() {
   const recentLeads = (leads || []).slice(0, 5);
   const newLeads = (leads || []).filter((l: any) => l.status === "new").length;
 
+  const s = stats as any;
+
   const statCards = [
-    { title: "Posts do Blog",       value: stats?.totalPosts ?? 0,                    icon: BookOpen,  iconBg: `${GOLD}18`,  iconColor: GOLD,          path: "/admin/blog",           action: "Gerenciar" },
-    { title: "Landing Pages",       value: stats?.totalLandingPages ?? 0,             icon: Megaphone, iconBg: `${NAVY}12`,  iconColor: NAVY,          path: "/admin/landing-pages",  action: "Gerenciar" },
-    { title: "Leads Recebidos",     value: stats?.totalLeads ?? 0,                    icon: Users,     iconBg: `${GOLD}18`,  iconColor: GOLD,          path: "/admin/leads",          action: "Ver leads", badge: newLeads > 0 ? `${newLeads} novos` : undefined },
-    { title: "Soluções Jurídicas",  value: (stats as any)?.totalPracticeAreas ?? 0,   icon: Scale,     iconBg: `${NAVY}12`,  iconColor: NAVY,          path: "/admin/practice-areas", action: "Gerenciar" },
-    { title: "FAQs",                value: (stats as any)?.totalFaqs ?? 0,            icon: HelpCircle,iconBg: `${GOLD}18`,  iconColor: GOLD,          path: "/admin/faq",            action: "Gerenciar" },
-    { title: "Imagens (Mídia)",     value: 0,                                         icon: Image,     iconBg: `${NAVY}12`,  iconColor: NAVY,          path: "/admin/media",          action: "Gerenciar" },
+    {
+      title: "Posts do Blog",
+      value: s?.totalPosts ?? 0,
+      icon: BookOpen,
+      iconBg: `${GOLD}18`,
+      iconColor: GOLD,
+      path: "/admin/blog",
+      action: "Gerenciar",
+      sub: [
+        { label: "Publicados",  count: s?.publishedPosts ?? 0,  color: "#16a34a", bg: "#dcfce7" },
+        { label: "Rascunhos",   count: s?.draftPosts ?? 0,      color: "#9333ea", bg: "#f3e8ff" },
+        { label: "Agendados",   count: s?.scheduledPosts ?? 0,  color: "#2563eb", bg: "#dbeafe" },
+        { label: "Arquivados",  count: s?.archivedPosts ?? 0,   color: "#64748b", bg: "#f1f5f9" },
+      ],
+    },
+    {
+      title: "Landing Pages",
+      value: s?.totalLandingPages ?? 0,
+      icon: Megaphone,
+      iconBg: `${NAVY}12`,
+      iconColor: NAVY,
+      path: "/admin/landing-pages",
+      action: "Gerenciar",
+      sub: [],
+    },
+    {
+      title: "Leads Recebidos",
+      value: s?.totalLeads ?? 0,
+      icon: Users,
+      iconBg: `${GOLD}18`,
+      iconColor: GOLD,
+      path: "/admin/leads",
+      action: "Ver leads",
+      badge: newLeads > 0 ? `${newLeads} novos` : undefined,
+      sub: [],
+    },
+    {
+      title: "Soluções Jurídicas",
+      value: s?.totalPracticeAreas ?? 0,
+      icon: Scale,
+      iconBg: `${NAVY}12`,
+      iconColor: NAVY,
+      path: "/admin/practice-areas",
+      action: "Gerenciar",
+      sub: [],
+    },
+    {
+      title: "FAQs",
+      value: s?.totalFaqs ?? 0,
+      icon: HelpCircle,
+      iconBg: `${GOLD}18`,
+      iconColor: GOLD,
+      path: "/admin/faq",
+      action: "Gerenciar",
+      sub: [],
+    },
+    {
+      title: "Imagens (Mídia)",
+      value: s?.totalMedia ?? 0,
+      icon: Image,
+      iconBg: `${NAVY}12`,
+      iconColor: NAVY,
+      path: "/admin/media",
+      action: "Gerenciar",
+      sub: [],
+    },
   ];
 
   const quickActions = [
-    { icon: PlusCircle, label: "Novo Post",          desc: "Publicar artigo no blog",      path: "/admin/blog",           iconBg: `${GOLD}18`,  iconColor: GOLD },
-    { icon: Video,      label: "Adicionar Vídeo",    desc: "Vimeo ou YouTube nas LPs",      path: "/admin/videos",         iconBg: `${NAVY}12`,  iconColor: NAVY },
-    { icon: Image,      label: "Upload de Imagem",   desc: "Adicionar foto ao site",        path: "/admin/media",          iconBg: `${GOLD}18`,  iconColor: GOLD },
-    { icon: Settings,   label: "Configurações",      desc: "WhatsApp, GA4, Pixel",          path: "/admin/settings",       iconBg: `${NAVY}12`,  iconColor: NAVY },
+    { icon: PlusCircle, label: "Novo Post",        desc: "Publicar artigo no blog",      path: "/admin/blog",            iconBg: `${GOLD}18`,  iconColor: GOLD },
+    { icon: Tag,        label: "Categorias",       desc: "Gerenciar categorias",          path: "/admin/categories",      iconBg: `${NAVY}12`,  iconColor: NAVY },
+    { icon: Image,      label: "Upload de Imagem", desc: "Adicionar foto ao site",        path: "/admin/media",           iconBg: `${GOLD}18`,  iconColor: GOLD },
+    { icon: Settings,   label: "Configurações",    desc: "WhatsApp, GA4, Pixel",          path: "/admin/settings",        iconBg: `${NAVY}12`,  iconColor: NAVY },
   ];
 
   if (isLoading) {
@@ -80,9 +152,35 @@ export default function AdminDashboard() {
         </div>
       )}
 
+      {/* ── Blog Status Card (destaque) ── */}
+      <div
+        className="rounded-2xl border bg-white shadow-sm p-5 cursor-pointer hover:shadow-md transition-all"
+        style={{ borderColor: `${GOLD}40`, borderLeftWidth: 4, borderLeftColor: GOLD }}
+        onClick={() => setLocation("/admin/blog")}
+      >
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <div className="h-10 w-10 rounded-xl flex items-center justify-center" style={{ background: `${GOLD}18` }}>
+              <BookOpen className="h-5 w-5" style={{ color: GOLD }} />
+            </div>
+            <div>
+              <p className="font-bold text-base" style={{ color: NAVY }}>Blog Jurídico</p>
+              <p className="text-xs text-muted-foreground">Status detalhado dos artigos</p>
+            </div>
+          </div>
+          <div className="text-3xl font-bold" style={{ color: NAVY }}>{s?.totalPosts ?? 0}</div>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          <StatusPill label="Publicados"  count={s?.publishedPosts ?? 0}  color="#16a34a" bg="#dcfce7" />
+          <StatusPill label="Rascunhos"   count={s?.draftPosts ?? 0}      color="#9333ea" bg="#f3e8ff" />
+          <StatusPill label="Agendados"   count={s?.scheduledPosts ?? 0}  color="#2563eb" bg="#dbeafe" />
+          <StatusPill label="Arquivados"  count={s?.archivedPosts ?? 0}   color="#64748b" bg="#f1f5f9" />
+        </div>
+      </div>
+
       {/* ── Stat cards ── */}
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {statCards.map((card) => (
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {statCards.slice(1).map((card) => (
           <div
             key={card.title}
             className="rounded-2xl border bg-white shadow-sm hover:shadow-md transition-all cursor-pointer group p-5"
@@ -202,12 +300,12 @@ export default function AdminDashboard() {
         <div className="bg-white p-4">
           <div className="grid sm:grid-cols-2 gap-1">
             {[
-              { icon: BookOpen, label: "Blog",           desc: "Publicar artigos, vídeos Vimeo/YouTube, capa e SEO",    path: "/admin/blog" },
-              { icon: Video,    label: "Vídeos",         desc: "Gerenciar vídeos Vimeo das landing pages",              path: "/admin/videos" },
-              { icon: Image,    label: "Mídia",          desc: "Upload de fotos para artigos e páginas",                path: "/admin/media" },
-              { icon: Users,    label: "Leads",          desc: "Ver contatos, atualizar funil, exportar CSV",           path: "/admin/leads" },
-              { icon: HelpCircle,label: "FAQ",           desc: "Gerenciar perguntas frequentes por categoria",          path: "/admin/faq" },
-              { icon: Settings, label: "Configurações",  desc: "WhatsApp, GA4, Meta Pixel, redes sociais",              path: "/admin/settings" },
+              { icon: BookOpen,   label: "Blog",         desc: "Publicar artigos, vídeos YouTube, capa, SEO e agendamento",  path: "/admin/blog" },
+              { icon: Tag,        label: "Categorias",   desc: "Criar e editar categorias do blog",                           path: "/admin/categories" },
+              { icon: Image,      label: "Mídia",        desc: "Upload de fotos para artigos e páginas",                     path: "/admin/media" },
+              { icon: Users,      label: "Leads",        desc: "Ver contatos, atualizar funil, exportar CSV",                path: "/admin/leads" },
+              { icon: HelpCircle, label: "FAQ",          desc: "Gerenciar perguntas frequentes por categoria",               path: "/admin/faq" },
+              { icon: Settings,   label: "Configurações",desc: "WhatsApp, GA4, Meta Pixel, redes sociais",                   path: "/admin/settings" },
             ].map((item) => (
               <button
                 key={item.label}

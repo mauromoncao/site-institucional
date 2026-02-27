@@ -62,6 +62,7 @@ const AdminMedia = lazy(() => import("./pages/admin/AdminMedia"));
 const AdminSettings = lazy(() => import("./pages/admin/AdminSettings"));
 const AdminVideos = lazy(() => import("./pages/admin/AdminVideos"));
 const AdminDrBen = lazy(() => import("./pages/admin/AdminDrBen"));
+const AdminCategories = lazy(() => import("./pages/admin/AdminCategories"));
 
 function AdminRouter() {
   return (
@@ -74,6 +75,7 @@ function AdminRouter() {
             <Route path="/admin/practice-areas" component={AdminPracticeAreas} />
             <Route path="/admin/landing-pages" component={AdminLandingPages} />
             <Route path="/admin/blog" component={AdminBlog} />
+            <Route path="/admin/categories" component={AdminCategories} />
             <Route path="/admin/faq" component={AdminFaq} />
             <Route path="/admin/leads" component={AdminLeads} />
             <Route path="/admin/media" component={AdminMedia} />

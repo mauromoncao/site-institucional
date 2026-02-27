@@ -35,6 +35,7 @@ import {
   ExternalLink,
   Video,
   Bot,
+  Tag,
 } from "lucide-react";
 import { CSSProperties, useEffect, useRef, useState, ReactNode } from "react";
 import { useLocation } from "wouter";
@@ -50,6 +51,7 @@ const menuItems = [
   { icon: Scale,           label: "Soluções",         path: "/admin/practice-areas" },
   { icon: Megaphone,       label: "Landing Pages",    path: "/admin/landing-pages" },
   { icon: BookOpen,        label: "Blog",             path: "/admin/blog" },
+  { icon: Tag,             label: "Categorias",       path: "/admin/categories" },
   { icon: Video,           label: "Vídeos",           path: "/admin/videos" },
   { icon: HelpCircle,      label: "FAQ",              path: "/admin/faq" },
   { icon: Users,           label: "Leads",            path: "/admin/leads" },

@@ -273,6 +273,7 @@ function HighlightCard({ post, variant = "small", badge }: { post: any; variant?
 ────────────────────────────────────────────── */
 export default function Blog() {
   const { data: posts } = trpc.blog.listPublic.useQuery();
+  const { data: faqData } = trpc.faq.listPublic.useQuery();
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
@@ -899,9 +900,9 @@ export default function Blog() {
             </div>
 
             <div className="flex flex-col gap-3">
-              {FAQ_ITEMS.map((item, i) => (
+              {(faqData && faqData.length > 0 ? faqData : FAQ_ITEMS.map((item, i) => ({ id: i, question: item.q, answer: item.a }))).map((item: any, i: number) => (
                 <div
-                  key={i}
+                  key={item.id ?? i}
                   className="bg-white rounded-2xl border overflow-hidden"
                   style={{ borderColor: openFaq === i ? `${GOLD}40` : "#e5e7eb" }}
                 >
@@ -913,7 +914,7 @@ export default function Blog() {
                       className="font-semibold text-sm leading-snug"
                       style={{ color: NAVY }}
                     >
-                      {item.q}
+                      {item.question ?? item.q}
                     </span>
                     {openFaq === i ? (
                       <ChevronUp className="w-4 h-4 shrink-0" style={{ color: GOLD }} />
@@ -924,7 +925,7 @@ export default function Blog() {
                   {openFaq === i && (
                     <div className="px-6 pb-5">
                       <p className="text-gray-600 text-sm leading-relaxed">
-                        {item.a}
+                        {item.answer ?? item.a}
                       </p>
                     </div>
                   )}

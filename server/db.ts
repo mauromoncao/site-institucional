@@ -396,24 +396,38 @@ export async function deleteChatConversation(id: number) {
 // ─── Dashboard Stats ───
 export async function getDashboardStats() {
   const db = getDb();
-  if (!db) return { totalLeads: 0, totalPosts: 0, totalPages: 0, totalLandingPages: 0, newLeads: 0, totalPracticeAreas: 0, totalFaqs: 0 };
+  if (!db) return {
+    totalLeads: 0, totalPosts: 0, totalPages: 0, totalLandingPages: 0,
+    newLeads: 0, totalPracticeAreas: 0, totalFaqs: 0,
+    publishedPosts: 0, draftPosts: 0, scheduledPosts: 0, archivedPosts: 0, totalMedia: 0,
+  };
 
   const [leadsCount] = await db.select({ count: sql<number>`cast(count(*) as int)` }).from(leads);
   const [newLeadsCount] = await db.select({ count: sql<number>`cast(count(*) as int)` }).from(leads).where(eq(leads.status, "new"));
   const [postsCount] = await db.select({ count: sql<number>`cast(count(*) as int)` }).from(blogPosts);
+  const [publishedPostsCount] = await db.select({ count: sql<number>`cast(count(*) as int)` }).from(blogPosts).where(eq(blogPosts.isPublished, true));
+  const [draftPostsCount] = await db.select({ count: sql<number>`cast(count(*) as int)` }).from(blogPosts).where(sql`(${blogPosts.status} = 'draft' OR ${blogPosts.status} IS NULL) AND ${blogPosts.isPublished} = false`);
+  const [scheduledPostsCount] = await db.select({ count: sql<number>`cast(count(*) as int)` }).from(blogPosts).where(sql`${blogPosts.status} = 'scheduled'`);
+  const [archivedPostsCount] = await db.select({ count: sql<number>`cast(count(*) as int)` }).from(blogPosts).where(sql`${blogPosts.status} = 'archived'`);
   const [pagesCount] = await db.select({ count: sql<number>`cast(count(*) as int)` }).from(pages);
   const [lpCount] = await db.select({ count: sql<number>`cast(count(*) as int)` }).from(landingPages);
   const [paCount] = await db.select({ count: sql<number>`cast(count(*) as int)` }).from(practiceAreas);
   const [faqCount] = await db.select({ count: sql<number>`cast(count(*) as int)` }).from(faqItems);
+  const [mediaCount] = await db.select({ count: sql<number>`cast(count(*) as int)` }).from(mediaFiles);
 
   return {
     totalLeads: leadsCount?.count ?? 0,
     newLeads: newLeadsCount?.count ?? 0,
     totalPosts: postsCount?.count ?? 0,
+    publishedPosts: publishedPostsCount?.count ?? 0,
+    draftPosts: draftPostsCount?.count ?? 0,
+    scheduledPosts: scheduledPostsCount?.count ?? 0,
+    archivedPosts: archivedPostsCount?.count ?? 0,
     totalPages: pagesCount?.count ?? 0,
     totalLandingPages: lpCount?.count ?? 0,
     totalPracticeAreas: paCount?.count ?? 0,
     totalFaqs: faqCount?.count ?? 0,
+    totalMedia: mediaCount?.count ?? 0,
   };
 }
 
