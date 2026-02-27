@@ -1,0 +1,17 @@
+# Vercel — Ignorar arquivos desnecessários no deploy
+*.zip
+*.log
+*.md
+.git
+node_modules
+home-server.cjs
+home.html
+hub-server.cjs
+hub-server.js
+hub.html
+hostinger_*
+site_atualizado_*
+final_htaccess
+htaccess
+neon-init.sql
+todo.md
