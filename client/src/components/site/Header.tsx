@@ -1,7 +1,17 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { Menu, X, ChevronDown, Bot } from "lucide-react";
+import { Menu, X, ChevronDown, Bot, BookOpen } from "lucide-react";
 import { useSettings } from "@/hooks/useSettings";
+
+const blogDropdown = [
+  { href: "/blog",                        label: "Ver todos os Artigos" },
+  { href: "/blog?cat=tributario",         label: "Tributário" },
+  { href: "/blog?cat=previdenciario",     label: "Previdenciário" },
+  { href: "/blog?cat=bancario",           label: "Bancário" },
+  { href: "/blog?cat=imobiliario",        label: "Imobiliário" },
+  { href: "/blog?cat=sucessorio",         label: "Sucessório" },
+  { href: "/blog?cat=consumidor",         label: "Consumidor" },
+];
 
 const areasDropdown = [
   { href: "/areas-de-atuacao",                        label: "Ver todas as Áreas" },
@@ -57,14 +67,17 @@ const socialLinks = [
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [areasOpen, setAreasOpen] = useState(false);
+  const [blogOpen, setBlogOpen] = useState(false);
   const [location] = useLocation();
   const { settings } = useSettings();
   const areasRef = useRef<HTMLDivElement>(null);
+  const blogRef = useRef<HTMLDivElement>(null);
   const phone = settings.phone_whatsapp || "5586994820054";
 
   useEffect(() => {
     function handleClick(e: MouseEvent) {
       if (areasRef.current && !areasRef.current.contains(e.target as Node)) setAreasOpen(false);
+      if (blogRef.current && !blogRef.current.contains(e.target as Node)) setBlogOpen(false);
     }
     document.addEventListener("mousedown", handleClick);
     return () => document.removeEventListener("mousedown", handleClick);
@@ -137,7 +150,42 @@ export default function Header() {
           {navLink("/solucoes-juridicas", "Soluções Jurídicas")}
 
           {navLink("/sobre", "Sobre Nós")}
-          {navLink("/blog", "Blog")}
+
+          {/* Blog dropdown */}
+          <div className="relative" ref={blogRef}>
+            <button
+              onMouseEnter={() => setBlogOpen(true)}
+              onClick={() => setBlogOpen(!blogOpen)}
+              className={`flex items-center gap-1 text-sm font-medium transition-colors hover:text-[#E8B84B] whitespace-nowrap ${
+                location.startsWith("/blog") ? "text-[#E8B84B]" : "text-white/85"
+              }`}
+            >
+              Blog
+              <ChevronDown className={`w-3.5 h-3.5 transition-transform ${blogOpen ? "rotate-180" : ""}`} />
+            </button>
+            {blogOpen && (
+              <div
+                className="absolute top-full left-0 mt-2 w-52 bg-[#19385C] border border-[#E8B84B]/20 rounded-xl shadow-2xl py-2 z-50"
+                onMouseLeave={() => setBlogOpen(false)}
+              >
+                {blogDropdown.map((item, idx) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setBlogOpen(false)}
+                    className={`block px-4 py-2.5 text-sm transition-colors hover:bg-white/5 hover:text-[#E8B84B] ${
+                      idx === 0
+                        ? "text-[#E8B84B] font-bold border-b border-white/10 mb-1 text-xs uppercase tracking-wider flex items-center gap-2"
+                        : "text-white/75"
+                    }`}
+                  >
+                    {idx === 0 ? <><BookOpen className="w-3.5 h-3.5" />{item.label}</> : item.label}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+
           {navLink("/faq", "FAQ")}
           {navLink("/contato", "Contato")}
 
